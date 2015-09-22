@@ -19,5 +19,5 @@
     "branch-alias": {
         "dev-master": "dev"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
