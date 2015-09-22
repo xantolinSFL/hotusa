@@ -4,7 +4,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Raúl",
+            "name": "Raúl Morón",
             "email": "raul@stayforlong.com"
         }
     ],
@@ -13,11 +13,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Stayforlong\\Hotusa\\": "/Stayforlong/Hotusa/src/"
+            "Stayforlong\\Hotusa\\": "src/"
         }
     },
     "branch-alias": {
         "dev-master": "dev"
-    },
-    "minimum-stability": "dev"
+    }
 }
