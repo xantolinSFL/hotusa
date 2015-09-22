@@ -1,0 +1,22 @@
+{
+    "name": "stayforlong/hotusa",
+    "description": "To use the differents services from Hotusa and Restel. Compatible with XML APIs v.9.4",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raúl",
+            "email": "raul@stayforlong.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Stayforlong\\Hotusa\\": "/Stayforlong/Hotusa/src/"
+        }
+    },
+    "branch-alias": {
+        "dev-master": "dev"
+    }
+}
