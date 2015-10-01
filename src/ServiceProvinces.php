@@ -5,7 +5,7 @@
  * @package StayForLong\Hotusa
  * @author Raúl Morón <raul@stayforlong.com>
  */
-class ServiceProvinces {
+final class ServiceProvinces {
 	const HOTUSA_SERVICE = 6;
 
 	/**

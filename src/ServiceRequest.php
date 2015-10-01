@@ -5,7 +5,7 @@
  * @package StayForLong\Hotusa
  * @author Raúl Morón <raul@stayforlong.com>
  */
-class ServiceRequest
+final class ServiceRequest
 {
 	private $request_parameters = [];
 
@@ -64,7 +64,6 @@ class ServiceRequest
 
 		if(isset($response_xml->parametros->error->descripcion))
 		{
-			dd($response_xml->parametros->error->descripcion);
 			throw new ServiceRequestException($response_xml->parametros->error->descripcion);
 		}
 

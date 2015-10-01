@@ -13,10 +13,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Stayforlong\\Hotusa\\": "src/"
+            "StayForLong\\Hotusa\\": "src/"
         }
     },
     "branch-alias": {
         "dev-master": "dev"
+    },
+    "config": {
+        "optimize-autoloader": true
     }
 }

@@ -12,7 +12,7 @@ namespace StayForLong\Hotusa;
  *
  * Services 17 of Hotusa/Restel XML Api.
  */
-class ServiceHotelsList
+final class ServiceHotelsList
 {
 	const HOTUSA_SERVICE = 17;
 
@@ -24,7 +24,7 @@ class ServiceHotelsList
 	/**
 	 * @var string
 	 */
-	private $path_xml_hotusa = "/var/www/stayforlong/restel.xml";
+	private $path_xml_hotusa = "/tmp";
 
 	/**
 	 * @param ServiceRequest $request

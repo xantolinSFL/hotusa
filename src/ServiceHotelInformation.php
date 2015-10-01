@@ -5,7 +5,7 @@
  * @package StayForLong\Hotusa
  * @author Raúl Morón <raul@stayforlong.com>
  */
-class ServiceHotelInformation
+final class ServiceHotelInformation
 {
 	const HOTUSA_SERVICE = 15;
 
