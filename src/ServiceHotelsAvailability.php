@@ -26,6 +26,7 @@ final class ServiceHotelsAvailability
 		'hotel',
 		'pais',
 		'provincia',
+		'poblacion',
 		'radio',
 		'fechaentrada',
 		'fechasalida',
@@ -90,10 +91,10 @@ final class ServiceHotelsAvailability
 			$response = $this->service_request->send($request_xml);
 
 			if ($response && isset($response->param->hotls)) {
-				$hotels = (array)$response->param->hotls;
+				$hotels = json_decode(json_encode($response->param->hotls), true);
 
 				if (0 >= $hotels['@attributes']["num"]) {
-					throw new ServiceHotelsAvailabilityException("No available rooms for the hotel");
+					throw new ServiceHotelsAvailabilityException("No available rooms for the hotel. Num: {$hotels['@attributes']["num"]}");
 				} elseif (1 >= $hotels['@attributes']["num"]) {
 					return [$hotels['hot']];
 				}
@@ -114,12 +115,14 @@ final class ServiceHotelsAvailability
 	 * @param $param_value
 	 * @return string
 	 */
-	protected function prepareHotelCodes($param_key, $param_value)
+	private function prepareHotelCodes($param_key, $param_value)
 	{
-		if ("hotel" == $param_key) {
+		if (empty($param_value)) {
+			$param_value = "";
+		} elseif ("hotel" == $param_key) {
 			$param_value = implode("#", explode(",", $param_value)) . "#";
-			return $param_value;
 		}
+
 		return $param_value;
 	}
 }
