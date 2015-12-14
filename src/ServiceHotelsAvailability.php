@@ -54,13 +54,13 @@ final class ServiceHotelsAvailability
 	public function __construct(
 		ServiceRequest $request,
 		HotusaXML $hotusa_xml,
-		array $request_configuration,
-		array $request_params
+		array $some_request_configuration,
+		array $some_request_params
 	) {
 		$this->service_request       = $request;
 		$this->hotusa_xml            = $hotusa_xml;
-		$this->request_params        = $request_params;
-		$this->request_configuration = $request_configuration;
+		$this->request_params        = $some_request_params;
+		$this->request_configuration = $some_request_configuration;
 	}
 
 	/**
@@ -89,12 +89,12 @@ final class ServiceHotelsAvailability
 			}
 
 			$response = $this->service_request->send($request_xml);
-
 			if ($response && isset($response->param->hotls)) {
 				$hotels = json_decode(json_encode($response->param->hotls), true);
 
 				if (0 >= $hotels['@attributes']["num"]) {
-					throw new ServiceHotelsAvailabilityException("No available rooms for the hotel. Num: {$hotels['@attributes']["num"]}");
+					$hotels_codes = $this->request_params['hotel'];
+					throw new ServiceHotelsAvailabilityException("No available rooms for the hotels $hotels_codes. Num: {$hotels['@attributes']["num"]}");
 				} elseif (1 >= $hotels['@attributes']["num"]) {
 					return [$hotels['hot']];
 				}
