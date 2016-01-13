@@ -25,8 +25,9 @@ final class ServiceRequest
 	 * ]
 	 *
 	 */
-	public function __construct(array $request_parameters)
+	public function __construct(array $request_parameters, $timeout = 2)
 	{
+		$this->timeout = $timeout;
 		$this->request_parameters = $request_parameters;
 	}
 
@@ -36,7 +37,7 @@ final class ServiceRequest
 	 * @return \SimpleXMLElement
 	 * @throws ServiceRequestException
 	 */
-	public function send(\SimpleXMLElement $xml, $timeout = 1)
+	public function send(\SimpleXMLElement $xml)
 	{
 		try {
 			$query = array(
@@ -48,7 +49,7 @@ final class ServiceRequest
 			);
 
 			$ch = curl_init($this->request_parameters['url']);
-			curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+			curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_ENCODING, $this->request_parameters['enconding']);
 			curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
