@@ -19,6 +19,9 @@ final class ServiceHotelInformation
 	 */
 	private $service_request;
 
+	/**
+	 * @var integer
+	 */
 	private $hotel_code;
 
 	/**
