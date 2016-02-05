@@ -60,14 +60,15 @@ final class ServiceHotelBookingVoucher
 			) {
 				$book = (array)$response->parametros->reserva;
 
-				$long_locator   = $book['localizador_largo'];
-				$extern_locator   = json_decode($book['localizador_ext']);
-				$voucher   = json_decode($book['bono']);
+				$long_locator  = $book['localizador_largo'];
+				$short_locator = $book['localizador_corto'];
+				$voucher       = json_decode($book['bono']);
 
 				return [
-					"long_locator"   => $long_locator,
-					"extern_locator" => $extern_locator,
-					"voucher"        => $voucher,
+					"long_locator"  => $long_locator,
+					"short_locator" => $short_locator,
+					"voucher"       => $voucher,
+					"raw_response"  => json_encode($book, true),
 				];
 			} else {
 				throw new ServiceHotelBookingVoucherException("Empty response from Hotusa");
