@@ -34,8 +34,8 @@ final class ServiceProvinces {
 
 			$request_xml = $this->hotusa_xml->init();
 			$request_xml->addChild('tipo', self::HOTUSA_SERVICE);
-			$request_xml->addChild('parametros');
-			$request_xml->addChild('comprimido', '2');
+			$params = $request_xml->addChild('parametros');
+			$params->addChild('comprimido', '2');
 
 			$response = $this->service_request->send($request_xml);
 			if ($response && isset($response->parametros->provincias)) {

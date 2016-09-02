@@ -42,10 +42,11 @@ final class ServiceHotelInformation
 		try {
 			$request_xml = $this->hotusa_xml->init();
 			$request_xml->addChild('tipo', self::HOTUSA_SERVICE);
-			$request_xml->addChild('parametros');
-			$request_xml->addChild('comprimido', '2');
-			$request_xml->addChild('codigo', $this->hotel_code);
-			$request_xml->addChild('idioma', $this->language);
+
+			$params = $request_xml->addChild('parametros');
+			$params->addChild('comprimido', '2');
+			$params->addChild('codigo', $this->hotel_code);
+			$params->addChild('idioma', $this->language);
 
 			$response = $this->service_request->send($request_xml);
 

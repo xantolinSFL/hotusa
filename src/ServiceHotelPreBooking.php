@@ -50,6 +50,10 @@ final class ServiceHotelPreBooking
 	/**
 	 * @param ServiceRequest $request
 	 * @param HotusaXML $hotusa_xml
+	 * @param $hotel_code
+	 * @param array $rate_keys
+	 * @param string $client_name
+	 * @param string $requests
 	 */
 	public function __construct(
 		ServiceRequest $request,
@@ -71,20 +75,19 @@ final class ServiceHotelPreBooking
 	{
 		try {
 			$request_xml = $this->hotusa_xml->init();
-			$request_xml->addChild('peticion');
 			$request_xml->addChild('tipo', self::HOTUSA_SERVICE);
 
-			$request_xml->addChild('parametros');
-			$request_xml->addChild('comprimido', '2');
-			$request_xml->addChild('codigo_hotel', $this->hotel_code);
-			$request_xml->addChild('nombre_cliente', $this->client_name);
-			$request_xml->addChild('observaciones', $this->requests);
-			$request_xml->addChild('num_mensaje', '');
-			$request_xml->addChild('forma_pago', self::DEFAULT_PAYMENT_TYPE);
+			$params = $request_xml->addChild('parametros');
+			$params->addChild('comprimido', '2');
+			$params->addChild('codigo_hotel', $this->hotel_code);
+			$params->addChild('nombre_cliente', $this->client_name);
+			$params->addChild('observaciones', $this->requests);
+			$params->addChild('num_mensaje', '');
+			$params->addChild('forma_pago', self::DEFAULT_PAYMENT_TYPE);
 
-			$request_xml->addChild('res');
+			$param_line = $params->addChild('res');
 			foreach ($this->rate_keys as $line) {
-				$request_xml->addChild('lin', $line);
+				$param_line->addChild('lin', $line);
 			}
 
 			$response = $this->service_request->send($request_xml);

@@ -75,6 +75,7 @@ final class ServiceHotelsAvailability
 			$request_xml->addChild('parametros');
 			$request_xml->addChild('comprimido', '2');
 			$request_xml->addChild('radio', '9');
+			$request_xml->addChild('tarifas_reembolsables', '1');
 			$request_xml->addChild('afiliacion', $this->request_configuration['afiliacio']);
 			$request_xml->addChild('usuario', $this->request_configuration['codusu']);
 

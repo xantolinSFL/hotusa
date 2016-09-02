@@ -30,6 +30,7 @@ final class ServiceHotelBookingVoucher
 	/**
 	 * @param ServiceRequest $request
 	 * @param HotusaXML $hotusa_xml
+	 * @param string $locator
 	 */
 	public function __construct(
 		ServiceRequest $request,
@@ -45,12 +46,11 @@ final class ServiceHotelBookingVoucher
 	{
 		try {
 			$request_xml = $this->hotusa_xml->init();
-			$request_xml->addChild('peticion');
 			$request_xml->addChild('tipo', self::HOTUSA_SERVICE);
 
-			$request_xml->addChild('parametros');
-			$request_xml->addChild('comprimido', '2');
-			$request_xml->addChild('localizador', $this->locator);
+			$params = $request_xml->addChild('parametros');
+			$params->addChild('comprimido', '2');
+			$params->addChild('localizador', $this->locator);
 
 			$response = $this->service_request->send($request_xml);
 
@@ -62,16 +62,11 @@ final class ServiceHotelBookingVoucher
 
 				$long_locator  = $book['localizador_largo'];
 				$short_locator = $book['localizador_corto'];
-				$reference       = json_decode($book['bono']);
-
-				if(empty($reference)){
-					$reference = $long_locator ." - ". $short_locator;
-				}
 
 				return [
 					"long_locator"  => $long_locator,
 					"short_locator" => $short_locator,
-					"reference"       => $reference,
+					"reference"     => $long_locator,
 					"raw_response"  => json_encode((array)$response, true),
 				];
 			} else {

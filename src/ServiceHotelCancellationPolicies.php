@@ -45,18 +45,17 @@ final class ServiceHotelCancellationPolicies
 	{
 		try {
 			$request_xml = $this->hotusa_xml->init();
-			$request_xml->addChild('peticion');
 			$request_xml->addChild('tipo', self::HOTUSA_SERVICE);
 
 			$request_xml->addChild('datos_reserva');
-			$request_xml->addChild('hotel', $this->hotel_code);
+			$hotel = $request_xml->addChild('hotel', $this->hotel_code);
 
 			foreach($this->rate_keys as $line){
-				$request_xml->addChild('lin', $line);
+				$hotel->addChild('lin', $line);
 			}
 
-			$request_xml->addChild('parametros');
-			$request_xml->addChild('comprimido', '2');
+			$params = $request_xml->addChild('parametros');
+			$params->addChild('comprimido', '2');
 
 			$response = $this->service_request->send($request_xml);
 			if (

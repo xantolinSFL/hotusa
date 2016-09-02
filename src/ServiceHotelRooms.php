@@ -52,9 +52,9 @@ final class ServiceHotelRooms
 		try {
 			$request_xml = $this->hotusa_xml->init();
 			$request_xml->addChild('tipo', self::HOTUSA_SERVICE);
-			$request_xml->addChild('parametros');
-			$request_xml->addChild('comprimido', '2');
-			$request_xml->addChild('codhot', $this->hotel_code);
+			$params = $request_xml->addChild('parametros');
+			$params->addChild('comprimido', '2');
+			$params->addChild('codhot', $this->hotel_code);
 
 			$response = $this->service_request->send($request_xml);
 

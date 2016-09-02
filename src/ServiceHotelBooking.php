@@ -35,6 +35,7 @@ final class ServiceHotelBooking
 	/**
 	 * @param ServiceRequest $request
 	 * @param HotusaXML $hotusa_xml
+	 * @param string $locator
 	 */
 	public function __construct(
 		ServiceRequest $request,
@@ -50,13 +51,12 @@ final class ServiceHotelBooking
 	{
 		try {
 			$request_xml = $this->hotusa_xml->init();
-			$request_xml->addChild('peticion');
 			$request_xml->addChild('tipo', self::HOTUSA_SERVICE);
 
-			$request_xml->addChild('parametros');
-			$request_xml->addChild('comprimido', '2');
-			$request_xml->addChild('localizador', $this->locator);
-			$request_xml->addChild('accion', self::BOOKING_ACTION);
+			$params = $request_xml->addChild('parametros');
+			$params->addChild('comprimido', '2');
+			$params->addChild('localizador', $this->locator);
+			$params->addChild('accion', self::BOOKING_ACTION);
 
 			$response = $this->service_request->send($request_xml);
 
@@ -64,12 +64,16 @@ final class ServiceHotelBooking
 				$response
 				&& isset($response->parametros->localizador)
 			) {
-				$long_locator =(array)$response->parametros->localizador;
-				$short_locator =(array)$response->parametros->localizador_corto;
+				$long_locator  = (array)$response->parametros->localizador;
+				$short_locator = (array)$response->parametros->localizador_corto;
+				$status        = (array)$response->parametros->estado;
+				$raw_response  = json_decode(json_encode($response), true);
 
 				return [
 					"long_locator"  => $long_locator[0],
 					"short_locator" => $short_locator[0],
+					"status"        => ("00" == $status[0]) ? "confirmed" : "invalid",
+					"raw_response"  => $raw_response,
 				];
 			} else {
 				throw new ServiceHotelBookingException("Empty response from Hotusa");
