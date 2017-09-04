@@ -11,6 +11,7 @@ final class ServiceRequest
 
 	/**
 	 * @param array $request_parameters
+	 * @param int $timeout
 	[
 	 * 'url'    => "http://xml.hotelresb2b.com/xml/listen_xml.jsp",
 	 * 'enconding' => '{iso-8859-1 | utf-8}',
@@ -23,30 +24,28 @@ final class ServiceRequest
 	 * 'xml'        => SimpleXMLElement
 	 * ]
 	 * ]
-	 *
 	 */
 	public function __construct(array $request_parameters, $timeout = 2)
 	{
-		$this->timeout = $timeout;
+		$this->timeout            = $timeout;
 		$this->request_parameters = $request_parameters;
 	}
 
 	/**
 	 * @param \SimpleXMLElement $xml
-	 * @param int $timeout
 	 * @return \SimpleXMLElement
 	 * @throws ServiceRequestException
 	 */
 	public function send(\SimpleXMLElement $xml)
 	{
 		try {
-			$query = array(
+			$query = [
 				'codigousu' => $this->request_parameters['codigousu'],
 				'clausu'    => $this->request_parameters['clausu'],
 				'afiliacio' => $this->request_parameters['afiliacio'],
 				'secacc'    => $this->request_parameters['secacc'],
 				'xml'       => $xml->asXML(),
-			);
+			];
 
 			$ch = curl_init($this->request_parameters['url']);
 			curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
@@ -57,6 +56,7 @@ final class ServiceRequest
 			curl_setopt($ch, CURLOPT_ENCODING, "gzip");
 
 			curl_setopt($ch, CURLOPT_POST, true);
+
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($query));
 
 			$response = curl_exec($ch);
