@@ -76,7 +76,7 @@ final class ServiceHotelsList
 	/**
 	 * @return bool
 	 */
-	private function cacheFileExists(): bool
+	private function cacheFileExists()
 	{
 		return file_exists($this->path_xml_hotusa);
 	}
@@ -84,7 +84,7 @@ final class ServiceHotelsList
 	/**
 	 * @return bool
 	 */
-	private function cacheFileNotStale(): bool
+	private function cacheFileNotStale()
 	{
 		return time() - filemtime($this->path_xml_hotusa) <= static::HOTUSA_CATALOGUE_CACHE_TIME;
 	}
