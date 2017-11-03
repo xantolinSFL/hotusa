@@ -10,7 +10,7 @@ use DateTime;
  * @package StayForLong\Hotusa
  * @author Raúl Morón <raul@stayforlong.com>
  */
-final class ServiceHotelLatestBookingsList
+final class ServiceBookingList
 {
 	const HOTUSA_SERVICE = 8;
 
@@ -23,11 +23,6 @@ final class ServiceHotelLatestBookingsList
 	 * @var ServiceRequest
 	 */
 	private $service_request;
-
-	/**
-	 * @var integer
-	 */
-	private $hotel_code;
 
 	/**
 	 * @var integer
