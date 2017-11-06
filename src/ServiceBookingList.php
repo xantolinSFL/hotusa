@@ -4,6 +4,7 @@
 namespace StayForLong\Hotusa;
 
 use DateTime;
+use StayForLong\Hotusa\Transformer\CurrencyTransformer;
 
 /**
  * Class ServiceHotelCancellationPolicies
@@ -77,12 +78,38 @@ final class ServiceBookingList
 					throw ServiceHotelLatestBookingsException::ofNoBookings();
 				}
 			}
-
-			return (array)$response->parametros->reservas;
+			$bookings = [];
+			foreach ($response->parametros->reservas as $reserva) {
+				$bookings[] = $this->transformBooking($reserva);
+			}
+			return $bookings;
 
 		} catch (ServiceRequestException $e) {
 			throw new ServiceHotelLatestBookingsException($e->getMessage());
 		}
+	}
+
+	/**
+	 * @param \SimpleXMLElement $reserva
+	 * @return array
+	 */
+	private function transformBooking(\SimpleXMLElement $reserva)
+	{
+		return [
+			'creation_date'     => ((array)$reserva->fecha_creacion)[0],
+			'cancellation_date' => ((array)$reserva->fecha_cancelacion)[0],
+			'long_locator'      => ((array)$reserva->localizador)[0],
+			'user'              => ((array)$reserva->usuario)[0],
+			'hotel_name'        => ((array)$reserva->hotel)[0],
+			'price'             => ((array)$reserva->precio)[0],
+			'short_locator'     => ((array)$reserva->localizador_corto)[0],
+			'client_name'       => ((array)$reserva->clienteres)[0],
+			'client_email'      => ((array)$reserva->emailres)[0],
+			'client_phone'      => ((array)$reserva->telfres)[0],
+			'checkin'           => ((array)$reserva->fecha_entrada)[0],
+			'currency'          => (new CurrencyTransformer(((array)$reserva->divisa)[0]))->transform(),
+			'id'                => ((array)$reserva->id)[0],
+		];
 	}
 }
 
