@@ -68,15 +68,12 @@ final class ServiceHotelBooking
 				$short_locator = (array)$response->parametros->localizador_corto;
 				$status        = (array)$response->parametros->estado;
 				$raw_response  = json_decode(json_encode($response), true);
-				$checkout      = (array)$response->parametros->fecha_salida;
-				$hotel_code    = (array)$response->parametros->codigo_hotel;
+
 				return [
 					"long_locator"  => $long_locator[0],
 					"short_locator" => $short_locator[0],
 					"status"        => ("00" == $status[0]) ? "confirmed" : "invalid",
 					"raw_response"  => $raw_response,
-					"checkout"      => $checkout[0],
-					"hotel_code"    => $hotel_code[0],
 				];
 			} else {
 				throw new ServiceHotelBookingException("Empty response from Hotusa");

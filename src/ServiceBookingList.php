@@ -7,7 +7,7 @@ use DateTime;
 use StayForLong\Hotusa\Transformer\CurrencyTransformer;
 
 /**
- * Class ServiceHotelCancellationPolicies
+ * Class ServiceBookingList
  * @package StayForLong\Hotusa
  * @author Raúl Morón <raul@stayforlong.com>
  */
@@ -65,7 +65,8 @@ final class ServiceBookingList
 			$params->addChild('mes', $this->date_start->format('m'));
 			$params->addChild('ano', $this->date_start->format('Y'));
 			$params->addChild('selector', 4);
-			$params->addChild('idioma', $this->language);
+			$params->addChild('idiorima', $this->language);
+			$params->addChild('usuario', $this->service_request->getCodUsu());
 
 			$response = $this->service_request->send($request_xml);
 
@@ -79,8 +80,8 @@ final class ServiceBookingList
 				}
 			}
 			$bookings = [];
-			foreach ($response->parametros->reservas as $reserva) {
-				$bookings[] = $this->transformBooking($reserva);
+			foreach ($response->parametros->reservas->reserva as $booking) {
+				$bookings[] = $this->transformBooking($booking);
 			}
 			return $bookings;
 
@@ -90,25 +91,25 @@ final class ServiceBookingList
 	}
 
 	/**
-	 * @param \SimpleXMLElement $reserva
+	 * @param \SimpleXMLElement $booking
 	 * @return array
 	 */
-	private function transformBooking(\SimpleXMLElement $reserva)
+	private function transformBooking(\SimpleXMLElement $booking)
 	{
 		return [
-			'creation_date'     => ((array)$reserva->fecha_creacion)[0],
-			'cancellation_date' => ((array)$reserva->fecha_cancelacion)[0],
-			'long_locator'      => ((array)$reserva->localizador)[0],
-			'user'              => ((array)$reserva->usuario)[0],
-			'hotel_name'        => ((array)$reserva->hotel)[0],
-			'price'             => ((array)$reserva->precio)[0],
-			'short_locator'     => ((array)$reserva->localizador_corto)[0],
-			'client_name'       => ((array)$reserva->clienteres)[0],
-			'client_email'      => ((array)$reserva->emailres)[0],
-			'client_phone'      => ((array)$reserva->telfres)[0],
-			'checkin'           => ((array)$reserva->fecha_entrada)[0],
-			'currency'          => (new CurrencyTransformer(((array)$reserva->divisa)[0]))->transform(),
-			'id'                => ((array)$reserva->id)[0],
+			'creation_date'     => ((string)$booking->fecha_creacion),
+			'cancellation_date' => ((string)$booking->fecha_cancelacion),
+			'long_locator'      => ((string)$booking->localizador),
+			'user'              => ((string)$booking->usuario),
+			'hotel_name'        => ((string)$booking->hotel),
+			'price'             => ((float)$booking->precio),
+			'short_locator'     => ((string)$booking->localizador_corto),
+			'client_name'       => ((string)$booking->clienteres),
+			'client_email'      => ((string)$booking->emailres),
+			'client_phone'      => ((string)$booking->telfres),
+			'checkin'           => ((string)$booking->fecha_entrada),
+			'currency'          => (new CurrencyTransformer((string)$booking->divisa))->transform(),
+			'id'                => ((string)$booking->id),
 		];
 	}
 }

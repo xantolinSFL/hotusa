@@ -28,7 +28,7 @@ class CurrencyTransformer
 	 */
 	public function __construct($hotusa_currency)
 	{
-		$this->hotusa_currency = $hotusa_currency;
+		$this->hotusa_currency = trim($hotusa_currency);
 	}
 
 	/**
