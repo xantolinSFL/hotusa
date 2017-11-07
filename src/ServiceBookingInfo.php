@@ -61,7 +61,7 @@ final class ServiceBookingInfo
 			$params = $request_xml->addChild('parametros');
 
 			$params->addChild('Localizador', $this->locator);
-			$params->addChild('Afiliacion', 'RS');
+			$params->addChild('Afiliacion', $this->service_request->getAfiliacion());
 			$response = $this->service_request->send($request_xml);
 
 			if (empty($response->RESERVA)) {

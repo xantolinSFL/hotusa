@@ -81,6 +81,11 @@ final class ServiceRequest
 	{
 		return $this->request_parameters['codusu'];
 	}
+
+	public function getAfiliacion()
+	{
+		return $this->request_parameters['afiliacio'];
+	}
 }
 
 class ServiceRequestException extends \ErrorException
