@@ -48,7 +48,10 @@ final class ServiceBookingInfo
 		$this->locator         = $locator;
 	}
 
-
+	/**
+	 * @return array
+	 * @throws ServiceBookingInfoException
+	 */
 	public function __invoke()
 	{
 		try {

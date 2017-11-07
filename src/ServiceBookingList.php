@@ -26,10 +26,6 @@ final class ServiceBookingList
 	private $service_request;
 
 	/**
-	 * @var integer
-	 */
-	private $language;
-	/**
 	 * @var DateTime
 	 */
 	private $date_start;
@@ -41,11 +37,10 @@ final class ServiceBookingList
 	 * @param DateTime $date_start
 	 * @param $language
 	 */
-	public function __construct(ServiceRequest $request, HotusaXML $hotusa_xml, DateTime $date_start, $language)
+	public function __construct(ServiceRequest $request, HotusaXML $hotusa_xml, DateTime $date_start)
 	{
 		$this->service_request = $request;
 		$this->hotusa_xml      = $hotusa_xml;
-		$this->language        = $language;
 		$this->date_start      = $date_start;
 	}
 
@@ -65,7 +60,6 @@ final class ServiceBookingList
 			$params->addChild('mes', $this->date_start->format('m'));
 			$params->addChild('ano', $this->date_start->format('Y'));
 			$params->addChild('selector', 4);
-			$params->addChild('idiorima', $this->language);
 			$params->addChild('usuario', $this->service_request->getCodUsu());
 
 			$response = $this->service_request->send($request_xml);

@@ -40,7 +40,10 @@ final class ServiceBookingLines
 		$this->short_locator   = $short_locator;
 	}
 
-
+	/**
+	 * @return array
+	 * @throws ServiceBookingLinesException
+	 */
 	public function __invoke()
 	{
 		try {
