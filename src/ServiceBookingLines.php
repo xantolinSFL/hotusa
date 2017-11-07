@@ -3,9 +3,6 @@
 
 namespace StayForLong\Hotusa;
 
-use DateTime;
-use StayForLong\Hotusa\Transformer\CurrencyTransformer;
-
 /**
  * Class ServiceBookingLines
  * @package StayForLong\Hotusa
@@ -25,14 +22,6 @@ final class ServiceBookingLines
 	 */
 	private $service_request;
 
-	/**
-	 * @var integer
-	 */
-	private $language;
-	/**
-	 * @var DateTime
-	 */
-	private $date_start;
 	/**
 	 * @var string
 	 */
@@ -91,18 +80,18 @@ final class ServiceBookingLines
 	private function transformLine(\SimpleXMLElement $line)
 	{
 		return [
-			'checkin'     => ((string)$line->fecha_entrada),
-			'checkout'    => ((string)$line->fecha_salida),
-			'client_name' => ((string)$line->cliente),
-			'room_type'   => ((string)$line->tipo_hab),
-			'rate'        => ((string)$line->tarifa),
-			'price'       => ((string)$line->importe),
-			"status"      => ("00" == ((string)$line->estado)) ? "confirmed" : "invalid",
-			'hotel_code'  => ((string)$line->codigo_hotel),
-			'room_count'  => ((string)$line->num_hab),
-			'regime'      => ((string)$line->regimen),
-			'adults'      => ((string)$line->num_adul),
-			'children'    => ((string)$line->num_nin),
+			'checkin'     => (string)$line->fecha_entrada,
+			'checkout'    => (string)$line->fecha_salida,
+			'client_name' => (string)$line->cliente,
+			'room_type'   => (string)$line->tipo_hab,
+			'rate'        => (string)$line->tarifa,
+			'price'       => (string)$line->importe,
+			"status"      => "00" == ((string)$line->estado) ? "confirmed" : "invalid",
+			'hotel_code'  => (string)$line->codigo_hotel,
+			'room_count'  => (string)$line->num_hab,
+			'regime'      => (string)$line->regimen,
+			'adults'      => (string)$line->num_adul,
+			'children'    => (string)$line->num_nin,
 		];
 	}
 }
