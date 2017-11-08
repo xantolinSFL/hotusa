@@ -50,7 +50,7 @@ final class CurrencyTransformerException extends \Exception
 	 * @param $currency
 	 * @return CurrencyTransformerException
 	 */
-	public static function ofCurrencyNotExists($currency)
+	public static function ofCurrencyDoesntExists($currency)
 	{
 		return new self(sprintf('Hotusa currency %s does not exists',
 			$currency));
