@@ -38,8 +38,7 @@ class CurrencyTransformer
 	public function transform()
 	{
 		if (empty(self::CURRENCIES[$this->hotusa_currency])) {
-			throw new CurrencyTransformerException(sprintf('Hotusa currency %s does not exists',
-				$this->hotusa_currency));
+			throw CurrencyTransformerException::ofCurrencyNotExists($this->hotusa_currency);
 		}
 		return self::CURRENCIES[$this->hotusa_currency];
 	}
@@ -47,5 +46,13 @@ class CurrencyTransformer
 
 final class CurrencyTransformerException extends \Exception
 {
-
+	/**
+	 * @param $currency
+	 * @return CurrencyTransformerException
+	 */
+	public static function ofCurrencyNotExists($currency)
+	{
+		return new self(sprintf('Hotusa currency %s does not exists',
+			$currency));
+	}
 }
