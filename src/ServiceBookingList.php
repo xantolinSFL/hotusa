@@ -4,9 +4,10 @@
 namespace StayForLong\Hotusa;
 
 use DateTime;
+use StayForLong\Hotusa\Transformer\CurrencyTransformer;
 
 /**
- * Class ServiceHotelCancellationPolicies
+ * Class ServiceBookingList
  * @package StayForLong\Hotusa
  * @author Raúl Morón <raul@stayforlong.com>
  */
@@ -25,10 +26,6 @@ final class ServiceBookingList
 	private $service_request;
 
 	/**
-	 * @var integer
-	 */
-	private $language;
-	/**
 	 * @var DateTime
 	 */
 	private $date_start;
@@ -40,11 +37,10 @@ final class ServiceBookingList
 	 * @param DateTime $date_start
 	 * @param $language
 	 */
-	public function __construct(ServiceRequest $request, HotusaXML $hotusa_xml, DateTime $date_start, $language)
+	public function __construct(ServiceRequest $request, HotusaXML $hotusa_xml, DateTime $date_start)
 	{
 		$this->service_request = $request;
 		$this->hotusa_xml      = $hotusa_xml;
-		$this->language        = $language;
 		$this->date_start      = $date_start;
 	}
 
@@ -64,7 +60,7 @@ final class ServiceBookingList
 			$params->addChild('mes', $this->date_start->format('m'));
 			$params->addChild('ano', $this->date_start->format('Y'));
 			$params->addChild('selector', 4);
-			$params->addChild('idioma', $this->language);
+			$params->addChild('usuario', $this->service_request->getCodUsu());
 
 			$response = $this->service_request->send($request_xml);
 
@@ -77,12 +73,38 @@ final class ServiceBookingList
 					throw ServiceHotelLatestBookingsException::ofNoBookings();
 				}
 			}
-
-			return (array)$response->parametros->reservas;
+			$bookings = [];
+			foreach ($response->parametros->reservas->reserva as $booking) {
+				$bookings[] = $this->transformBooking($booking);
+			}
+			return $bookings;
 
 		} catch (ServiceRequestException $e) {
 			throw new ServiceHotelLatestBookingsException($e->getMessage());
 		}
+	}
+
+	/**
+	 * @param \SimpleXMLElement $booking
+	 * @return array
+	 */
+	private function transformBooking(\SimpleXMLElement $booking)
+	{
+		return [
+			'creation_date'     => ((string)$booking->fecha_creacion),
+			'cancellation_date' => ((string)$booking->fecha_cancelacion),
+			'long_locator'      => ((string)$booking->localizador),
+			'user'              => ((string)$booking->usuario),
+			'hotel_name'        => ((string)$booking->hotel),
+			'price'             => ((float)$booking->precio),
+			'short_locator'     => ((string)$booking->localizador_corto),
+			'client_name'       => ((string)$booking->clienteres),
+			'client_email'      => ((string)$booking->emailres),
+			'client_phone'      => ((string)$booking->telfres),
+			'checkin'           => ((string)$booking->fecha_entrada),
+			'currency'          => (new CurrencyTransformer((string)$booking->divisa))->transform(),
+			'id'                => ((string)$booking->id),
+		];
 	}
 }
 

@@ -73,6 +73,19 @@ final class ServiceRequest
 			throw new ServiceRequestException("Response: $response");
 		}
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getCodUsu()
+	{
+		return $this->request_parameters['codusu'];
+	}
+
+	public function getAfiliacion()
+	{
+		return $this->request_parameters['afiliacio'];
+	}
 }
 
 class ServiceRequestException extends \ErrorException
